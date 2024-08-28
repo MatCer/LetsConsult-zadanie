@@ -1,5 +1,8 @@
 <script>
+import Layout from "@/components/Layout.vue";
+
 export default {
+    components: {Layout},
     props: {
         books: Array,
     },
@@ -7,10 +10,13 @@ export default {
 </script>
 
 <template>
-    <h1>Books list</h1>
-    <ul>
-        <li v-for="book in books" :key="book.id">
-            {{ book.title }}
-        </li>
-    </ul>
+    <Layout>
+        <template #heading>Books List</template>
+
+        <ul>
+            <li v-for="book in books" :key="book.id">
+                {{ book.title }}
+            </li>
+        </ul>
+    </Layout>
 </template>
