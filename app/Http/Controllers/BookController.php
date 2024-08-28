@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Author;
 use App\Models\Book;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class BookController extends Controller
 {
+    protected $rules = [
+        'title' => 'required|string|max:255',
+        'author_id' => 'required|exists:authors,id',
+        'is_borrowed' => 'boolean',
+    ];
     /**
      * Display a listing of the resource.
      */
@@ -23,7 +29,11 @@ class BookController extends Controller
      */
     public function create()
     {
-        //
+        $authors = Author::all();
+
+        return Inertia::render('Books/Compose', [
+            'authors' => $authors
+        ]);
     }
 
     /**
@@ -31,15 +41,11 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $validated = $request->validate($this->rules);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Book $book)
-    {
-        //
+        $book = Book::create($validated);
+
+        return redirect()->route('books.edit', $book)->with('success', 'Book created successfully.');
     }
 
     /**
@@ -47,7 +53,12 @@ class BookController extends Controller
      */
     public function edit(Book $book)
     {
-        //
+        $authors = Author::all();
+
+        return Inertia::render('Books/Compose', [
+            'book' => $book,
+            'authors' => $authors,
+        ]);
     }
 
     /**
@@ -55,7 +66,11 @@ class BookController extends Controller
      */
     public function update(Request $request, Book $book)
     {
-        //
+        $validated = $request->validate($this->rules);
+
+        $book->update($validated);
+
+        return redirect()->route('books.edit', $book)->with('success', 'Book updated successfully.');
     }
 
     /**
