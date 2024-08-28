@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class BookController extends Controller
 {
@@ -12,7 +13,9 @@ class BookController extends Controller
      */
     public function index()
     {
-        return Book::all();
+        return Inertia::render('Books/Index', [
+            'books' => Book::all(),
+        ]);
     }
 
     /**
