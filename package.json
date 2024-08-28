@@ -16,6 +16,7 @@
         "@inertiajs/vue3": "^1.2.0",
         "@vitejs/plugin-vue": "^5.1.2",
         "vue": "^3.4.38",
+        "vue-debounce": "^5.0.0",
         "vue-loader": "^17.3.1"
     }
 }
