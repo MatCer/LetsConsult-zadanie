@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Author;
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Inertia\Inertia;
 
 class BookController extends Controller
@@ -18,10 +19,24 @@ class BookController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $filters = $request->only(['search', 'is_borrowed']);
+
+        $booksQuery = Book::query()
+            ->with('author')
+            ->search(Arr::get($filters, 'search', ''));
+
+        $isBorrowed = Arr::get($filters, 'is_borrowed');
+        if (!is_null($isBorrowed)) {
+            $booksQuery->where('is_borrowed', $isBorrowed === '1');
+        }
+
+        $books = $booksQuery->get();
+
         return Inertia::render('Books/Index', [
-            'books' => Book::with('author')->get(),
+            'books' => $books,
+            'filters' => $filters,
         ]);
     }
 
