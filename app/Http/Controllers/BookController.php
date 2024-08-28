@@ -14,13 +14,14 @@ class BookController extends Controller
         'author_id' => 'required|exists:authors,id',
         'is_borrowed' => 'boolean',
     ];
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         return Inertia::render('Books/Index', [
-            'books' => Book::all(),
+            'books' => Book::with('author')->get(),
         ]);
     }
 
@@ -45,7 +46,8 @@ class BookController extends Controller
 
         $book = Book::create($validated);
 
-        return redirect()->route('books.edit', $book)->with('success', 'Book created successfully.');
+        return redirect()->route('books.edit', $book)
+            ->with('success', 'Book created successfully.');
     }
 
     /**
@@ -70,7 +72,8 @@ class BookController extends Controller
 
         $book->update($validated);
 
-        return redirect()->route('books.edit', $book)->with('success', 'Book updated successfully.');
+        return redirect()->route('books.edit', $book)
+            ->with('success', 'Book updated successfully.');
     }
 
     /**
@@ -78,6 +81,18 @@ class BookController extends Controller
      */
     public function destroy(Book $book)
     {
-        //
+        $book->delete();
+
+        return redirect()->route('books.index')
+            ->with('success', 'Book deleted successfully.');
+    }
+
+    public function toggleBorrowed(Book $book)
+    {
+        $book->is_borrowed = !$book->is_borrowed;
+        $book->save();
+
+        return redirect()->back()
+            ->with('success', 'Book status updated successfully.');
     }
 }

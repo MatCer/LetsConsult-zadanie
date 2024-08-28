@@ -1,11 +1,22 @@
 <script>
 import Layout from "@/components/Layout.vue";
+import { Link } from '@inertiajs/vue3';
+import Table from "@/components/Table.vue";
+import BooksTableBody from "@/components/BooksTableBody.vue";
 
 export default {
-    components: {Layout},
+    components: {BooksTableBody, Table, Layout, Link },
     props: {
         books: Array,
     },
+    data() {
+        return {
+            tableColumns: [
+                'Title', 'Author', 'Borrowed', 'Actions'
+            ]
+        }
+    },
+
 };
 </script>
 
@@ -13,10 +24,12 @@ export default {
     <Layout>
         <template #heading>Books List</template>
 
-        <ul>
-            <li v-for="book in books" :key="book.id">
-                {{ book.title }}
-            </li>
-        </ul>
+        <Link href="/books/create" class="btn btn-primary">Add New Book</Link>
+
+        <Table :columns="tableColumns">
+            <template #body>
+                <BooksTableBody :books="books" />
+            </template>
+        </Table>
     </Layout>
 </template>
