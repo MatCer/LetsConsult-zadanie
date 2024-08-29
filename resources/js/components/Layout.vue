@@ -1,12 +1,14 @@
 <script>
 import AlertSuccess from "@/components/AlertSuccess.vue";
+import Header from "@/components/Header.vue";
 
 export default {
-    components: {AlertSuccess}
+    components: {Header, AlertSuccess}
 }
 </script>
 
 <template>
+    <Header/>
     <main>
         <div class="container">
             <AlertSuccess/>
