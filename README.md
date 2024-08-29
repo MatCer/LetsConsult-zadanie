@@ -20,7 +20,7 @@
    ```sh
    cp .env.example .env
     ```
-- Modify .env:
+3. Modify .env:
     - configure the database
         ```
         DB_CONNECTION=mysql
