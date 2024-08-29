@@ -9,6 +9,11 @@ use Inertia\Inertia;
 
 class AuthorController extends Controller
 {
+    protected $rules = [
+        'name' => 'required|string|max:255',
+        'surname' => 'required|string|max:255',
+    ];
+
     /**
      * Display a listing of the resource.
      */
@@ -33,7 +38,7 @@ class AuthorController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Authors/Compose');
     }
 
     /**
@@ -41,15 +46,12 @@ class AuthorController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $validated = $request->validate($this->rules);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Author $author)
-    {
-        //
+        $author = Author::create($validated);
+
+        return redirect()->route('authors.edit', $author)
+            ->with('success', 'Author created successfully.');
     }
 
     /**
@@ -57,7 +59,9 @@ class AuthorController extends Controller
      */
     public function edit(Author $author)
     {
-        //
+        return Inertia::render('Authors/Compose', [
+            'author' => $author,
+        ]);
     }
 
     /**
@@ -65,7 +69,12 @@ class AuthorController extends Controller
      */
     public function update(Request $request, Author $author)
     {
-        //
+        $validated = $request->validate($this->rules);
+
+        $author->update($validated);
+
+        return redirect()->route('authors.edit', $author)
+            ->with('success', 'Author updated successfully.');
     }
 
     /**
