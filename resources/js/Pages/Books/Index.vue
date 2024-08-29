@@ -4,11 +4,12 @@ import { Link } from '@inertiajs/vue3';
 import Table from "@/components/Table.vue";
 import BooksTableBody from "@/components/BooksTableBody.vue";
 import BookFilters from "@/components/BookFilters.vue";
+import Pagination from "@/components/Pagination.vue";
 
 export default {
-    components: {BookFilters, BooksTableBody, Table, Layout, Link },
+    components: { Pagination, BookFilters, BooksTableBody, Table, Layout, Link },
     props: {
-        books: Array,
+        books: Object,
         filters: {
             type: Object,
             default: () => ({})
@@ -35,8 +36,10 @@ export default {
 
         <Table :columns="tableColumns">
             <template #body>
-                <BooksTableBody :books="books" />
+                <BooksTableBody :books="books.data" />
             </template>
         </Table>
+
+        <Pagination :links="books.links"/>
     </Layout>
 </template>

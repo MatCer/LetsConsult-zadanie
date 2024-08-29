@@ -32,7 +32,8 @@ class BookController extends Controller
             $booksQuery->where('is_borrowed', $isBorrowed === '1');
         }
 
-        $books = $booksQuery->get();
+        $books = $booksQuery->paginate(5)
+            ->appends(request()->query());
 
         return Inertia::render('Books/Index', [
             'books' => $books,

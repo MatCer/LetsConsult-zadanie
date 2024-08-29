@@ -25,7 +25,8 @@ class AuthorController extends Controller
             ->withCount('books')
             ->search(Arr::get($filters, 'search', ''));
 
-        $authors = $authorsQuery->get();
+        $authors = $authorsQuery->paginate(5)
+            ->appends(request()->query());
 
         return Inertia::render('Authors/Index', [
             'authors' => $authors,
