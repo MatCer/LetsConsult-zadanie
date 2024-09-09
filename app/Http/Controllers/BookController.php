@@ -10,7 +10,7 @@ use Inertia\Inertia;
 
 class BookController extends Controller
 {
-    protected $rules = [
+    protected array $rules = [
         'title' => 'required|string|max:255',
         'author_id' => 'required|exists:authors,id',
         'is_borrowed' => 'boolean',
@@ -19,7 +19,7 @@ class BookController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request): \Inertia\Response
     {
         $filters = $request->only(['search', 'is_borrowed']);
 
@@ -44,7 +44,7 @@ class BookController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): \Inertia\Response
     {
         $authors = Author::all();
 
@@ -56,7 +56,7 @@ class BookController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validated = $request->validate($this->rules);
 
@@ -69,7 +69,7 @@ class BookController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Book $book)
+    public function edit(Book $book): \Inertia\Response
     {
         $authors = Author::all();
 
@@ -82,7 +82,7 @@ class BookController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Book $book)
+    public function update(Request $request, Book $book): \Illuminate\Http\RedirectResponse
     {
         $validated = $request->validate($this->rules);
 
@@ -95,7 +95,7 @@ class BookController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Book $book)
+    public function destroy(Book $book): \Illuminate\Http\RedirectResponse
     {
         $book->delete();
 
@@ -103,7 +103,7 @@ class BookController extends Controller
             ->with('success', 'Book deleted successfully.');
     }
 
-    public function toggleBorrowed(Book $book)
+    public function toggleBorrowed(Book $book): \Illuminate\Http\RedirectResponse
     {
         $book->is_borrowed = !$book->is_borrowed;
         $book->save();

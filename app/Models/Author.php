@@ -11,7 +11,7 @@ class Author extends Model
 
     protected $fillable = ['name', 'surname'];
 
-    public function books()
+    public function books(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Book::class);
     }

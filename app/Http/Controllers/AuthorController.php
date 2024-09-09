@@ -9,7 +9,7 @@ use Inertia\Inertia;
 
 class AuthorController extends Controller
 {
-    protected $rules = [
+    protected array $rules = [
         'name' => 'required|string|max:255',
         'surname' => 'required|string|max:255',
     ];
@@ -17,7 +17,7 @@ class AuthorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request): \Inertia\Response
     {
         $filters = $request->only(['search', 'is_borrowed']);
 
@@ -37,7 +37,7 @@ class AuthorController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): \Inertia\Response
     {
         return Inertia::render('Authors/Compose');
     }
@@ -45,7 +45,7 @@ class AuthorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validated = $request->validate($this->rules);
 
@@ -58,7 +58,7 @@ class AuthorController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Author $author)
+    public function edit(Author $author): \Inertia\Response
     {
         return Inertia::render('Authors/Compose', [
             'author' => $author,
@@ -68,7 +68,7 @@ class AuthorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Author $author)
+    public function update(Request $request, Author $author): \Illuminate\Http\RedirectResponse
     {
         $validated = $request->validate($this->rules);
 
@@ -81,7 +81,7 @@ class AuthorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Author $author)
+    public function destroy(Author $author): \Illuminate\Http\RedirectResponse
     {
         $author->delete();
 
